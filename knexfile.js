@@ -1,13 +1,19 @@
-// Update with your config settings.
+require("dotenv").config();
 
 module.exports = {
   development: {
     client: "sqlite3",
-    connection: { filename: "./database/tech.db3" },
     useNullAsDefault: true,
+    connection: {
+      filename: "./database/tech.db3",
+    },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run("PRAGMA foreign_keys = ON", done);
+      },
+    },
     migrations: {
       directory: "./database/migrations",
-      tableName: "dbmigrations",
     },
     seeds: { directory: "./database/seeds" },
   },
